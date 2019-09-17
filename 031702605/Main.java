@@ -35,7 +35,7 @@ public class Main {
                String  s2=deletephonenumber(_str2[1],s1);
   			   String  _str3 =deletephonenumber(s2,".");
                String  d=_str3;  
-        	   write("        \"地址\"：[",x2);
+        	   write("        \"地址\":[",x2);
         	   int count=0;
         	   for(int j=0;j<4;j++)
         	   {
@@ -87,7 +87,7 @@ public class Main {
         	   String  s2=deletephonenumber(_str2[1],s1);
   			   String  _str3 =deletephonenumber(s2,".");
                String  d=_str3;  
-        	   write("        \"地址\"：[",x2);
+        	   write("        \"地址\":[",x2);
         	   int count=0;
         	   for(int j=0;j<4;j++)
         	   {
@@ -162,12 +162,12 @@ public static void write(String content,String s) {  //字符串写入文件
 	        }
 	    }
 public static void name(String s1,String s) {  //写入名字
-	String a="\"姓名 \"：\"";
+	String a="\"姓名\":\"";
 	String b="\",";
 	write("        "+a+s1+b,s);
 }
 public static void phonenumber(String s1,String s) {    //写入手机号
-	String a="\"手机 \"：\"";
+	String a="\"手机\":\"";
   	String b="\",";
     write("        "+a+s1+b,s);
 }
