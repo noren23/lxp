@@ -1,5 +1,3 @@
-package addressbook;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,45 +8,41 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-public class addressbook {
-public static void main(String[] args) throws IOException { 
-	    Scanner input = new Scanner(System.in);
-	    String s  = input.nextLine();
-	    input.close();
-	    String [] ss = s.split(" ");    
+public class Main {
+	public static void main(String[] args) throws IOException { 
+        String x1= args[0];
+        String x2= args[1]; 
 	    String[] s3 = {"上海","北京","天津","重庆"}   ;
-	    write("[",ss[1]);
-        File f  = new File(ss[0]);  
+	    write("[",x2);
+        File f  = new File(x1);  
         FileInputStream in = new FileInputStream(f);  
         // 指定读取文件时以UTF-8的格式读取  
         BufferedReader br1 = new BufferedReader(new InputStreamReader(in, "UTF-8"));
         String line = br1.readLine();  
         while(line != null)  
         {  
-        	write("    {",ss[1]);
+        	write("    {",x2);
         	String [] _str1 = line.split("!");
         	if(_str1[0].equals("1"))         	//判断难度
         	{
         	   String [] _str2 = _str1[1].split(",");
-        	   name(_str2[0],ss[1]);
+        	   name(_str2[0],x2);
                String  s1 = getTelnum(_str2[1]);
-               phonenumber(s1,ss[1]);
+               phonenumber(s1,x2);
                String  s2=deletephonenumber(_str2[1],s1);
   			   String  _str3 =deletephonenumber(s2,".");
                String  d=_str3;  
-        	   write("       \"地址\"：[",ss[1]);
+        	   write("        \"地址\"：[",x2);
         	   int count=0;
         	   for(int j=0;j<4;j++)
         	   {
         		   if(s2.contains(s3[j]))
         		   {
-       				write("            \""+s3[j]+"\",",ss[1]);
-       				write("            \""+s3[j]+"市\",",ss[1]);
+       				write("            \""+s3[j]+"\",",x2);
+       				write("            \""+s3[j]+"市\",",x2);
        				_str3=s3[j]+"省"+d;
        				List<Map<String,String>> table=new ArrayList<Map<String,String>>();
             	    table=addressResolution1(_str3);
@@ -58,10 +52,10 @@ public static void main(String[] args) throws IOException {
          				count++;
          				if(count<=2)
          				{
-         				write("            \""+map.get(key)+"\",",ss[1]);
+         				write("            \""+map.get(key)+"\",",x2);
          				}
          				else
-         				write("            \""+map.get(key)+"\"",ss[1]);
+         				write("            \""+map.get(key)+"\"",x2);
             			}
             		 }
          		    break;
@@ -76,21 +70,70 @@ public static void main(String[] args) throws IOException {
     			   for (String key : strings) {
     				  count++;
     				  if(count<=4)
-    				    write("            \""+map.get(key)+"\",",ss[1]);
+    				    write("            \""+map.get(key)+"\",",x2);
     				  else
-    				    write("            \""+map.get(key)+"\"",ss[1]);
+    				    write("            \""+map.get(key)+"\"",x2);
        			   }
        		     }
         	   }
-       		   write("        ]",ss[1]);
+       		   write("        ]",x2);
+        	}
+        	else
+        	{
+        	   String [] _str2 = _str1[1].split(",");
+        	   name(_str2[0],x2);
+        	   String  s1 = getTelnum(_str2[1]);
+        	   phonenumber(s1,x2);
+        	   String  s2=deletephonenumber(_str2[1],s1);
+  			   String  _str3 =deletephonenumber(s2,".");
+               String  d=_str3;  
+        	   write("        \"地址\"：[",x2);
+        	   int count=0;
+        	   for(int j=0;j<4;j++)
+        	   {
+        		   if(s2.contains(s3[j]))
+        		   {
+       				write("            \""+s3[j]+"\",",x2);
+       				write("            \""+s3[j]+"市\",",x2);
+       				_str3=s3[j]+"省"+d;
+       				List<Map<String,String>> table=new ArrayList<Map<String,String>>();
+            	    table=addressResolution2(_str3);
+         		    for (Map<String, String> map : table) {
+         			  Set<String> strings = map.keySet();
+         			  for (String key : strings) {
+         				count++;
+         				if(count<=2)
+         				  write("            \""+map.get(key)+"\",",x2);
+         				else
+         				  write("            \""+map.get(key)+"\"",x2);
+            		  }
+            		 }
+        		   }
+        	   }  
+        	   if(count==0)
+        	   {
+        	     List<Map<String,String>> table=new ArrayList<Map<String,String>>();
+       	   	      table=addressResolution3(d);
+    		     for (Map<String, String> map : table) {
+    			    Set<String> strings = map.keySet();
+    			    for (String key : strings) {
+    				  count++;
+    				  if(count<=4)
+    				     write("            \""+map.get(key)+"\",",x2);
+    				  else
+    				     write("            \""+map.get(key)+"\"",x2);
+       			    }
+       		     }
+        	   }
+       		   write("        ]",x2);
         	}   
            line = br1.readLine(); 
            if(line!=null)
-        	   write("    },",ss[1]);
+        	   write("    },",x2);
            else
-        	   write("    }",ss[1]); 
+        	   write("    }",x2); 
         }
-        write("]",ss[1]);
+        write("]",x2);
         br1.close();
 }
 public static void write(String content,String s) {  //字符串写入文件
@@ -157,7 +200,7 @@ public static String deletephonenumber(String str1,String str2) { //删掉手机
 		return s1;
 	}
 public static List<Map<String,String>> addressResolution(String address){     //五级地址解析
-	    String regex="(?<province>[^省]+自治区|.*?省|.*?行政区|.*?市)(?<city>[^市]+自治州|.*?地区|.*?行政单位|.+盟|市辖区|.*?市|.*?县)(?<county>[^县]+县|.+区|.+市|.+旗|.+海域|.+岛)?(?<town>[^区]+区|.+镇)?(?<village>.*)";
+	    String regex="(?<province>[^省]+自治区|.*?省|.*?行政区|.*?市)(?<city>[^市]+自治州|.*?地区|.*?行政单位|.+盟|市辖区|.*?市|.*?县)(?<county>[^县]+县|.+区|.+市|.+旗|.+海域|.+岛)?(?<town>[^区]+区|.+镇|.+街道|.+乡)?(?<village>.*)";
         Matcher m=Pattern.compile(regex).matcher(address);
         String province=null,city=null,county=null,town=null,village=null;
         List<Map<String,String>> table=new ArrayList<Map<String,String>>();
@@ -179,7 +222,7 @@ public static List<Map<String,String>> addressResolution(String address){     //
         return table;
 }
 public static List<Map<String,String>> addressResolution1(String address){    //直辖市五级
-	 String regex="((?<province>[^省]+省|.+自治区)|上海|北京|天津|重庆)(?<city>[^市]+市|.+自治州)(?<county>[^县]+县|.+区|.+镇|.+局)?(?<town>[^区]+区|.+镇|.+街道)?(?<village>.*)";
+	 String regex="((?<province>[^省]+省|.+自治区)|上海|北京|天津|重庆)(?<city>[^市]+市|.+自治州)(?<county>[^县]+县|.+区|.+镇|.+局|.+市)?(?<town>[^区]+区|.+镇|.+街道|.+乡)?(?<village>.*)";
        Matcher m=Pattern.compile(regex).matcher(address);
 		String county=null,town=null,village=null;
        List<Map<String,String>> table=new ArrayList<Map<String,String>>();
@@ -195,5 +238,53 @@ public static List<Map<String,String>> addressResolution1(String address){    //
            table.add(row);
        }
        return table;
+}
+public static List<Map<String,String>> addressResolution3(String address){   //七级地址解析
+    String regex="((?<province>[^省]+省|.+自治区)|上海|北京|天津|重庆)(?<city>[^市]+市|.+自治州)(?<county>[^县]+县|.+区|.+局|.+市)(?<town>[^区]+区|.+镇|.+街道|.+乡)?(?<road>[^路]+路|.+弄|.+街|.+巷)?(?<number>[^号]+号)?(?<village>.*)";
+    Matcher m=Pattern.compile(regex).matcher(address);
+	String province=null,city=null,county=null,town=null,village=null,road=null,number=null;
+    List<Map<String,String>> table=new ArrayList<Map<String,String>>();
+    Map<String,String> row=null;
+    while(m.find()){
+        row=new LinkedHashMap<String,String>();
+        province=m.group("province");
+        row.put("province", province==null?"":province.trim());
+        city=m.group("city");
+        row.put("city", city==null?"":city.trim());
+        county=m.group("county");
+        row.put("county", county==null?"":county.trim());
+        town=m.group("town");
+        row.put("town", town==null?"":town.trim());
+        road=m.group("road");
+        row.put("road", road==null?"":road.trim());
+        number=m.group("number");
+        row.put("number", number==null?"":number.trim());
+        village=m.group("village");
+        row.put("village", village==null?"":village.trim());
+        table.add(row);
+    }
+    return table;
+}
+public static List<Map<String,String>> addressResolution2(String address){    //直辖市七级
+	String regex="((?<province>[^省]+省|.+自治区)|上海|北京|天津|重庆)(?<city>[^市]+市|.+自治州)(?<county>[^县]+县|.+区|.+局|.+市)(?<town>[^区]+区|.+镇|.+街道|.+乡)?(?<road>[^路]+路|.+弄|.+街|.+巷)?(?<number>[^号]+号)?(?<village>.*)";
+      Matcher m=Pattern.compile(regex).matcher(address);
+  	  String  county=null,town=null,village=null,road=null,number=null;
+      List<Map<String,String>> table=new ArrayList<Map<String,String>>();
+      Map<String,String> row=null;
+      while(m.find()){
+          row=new LinkedHashMap<String,String>();
+          county=m.group("county");
+          row.put("county", county==null?"":county.trim());
+          town=m.group("town");
+          row.put("town", town==null?"":town.trim());
+          road=m.group("road");
+          row.put("road", road==null?"":road.trim());
+          number=m.group("number");
+          row.put("number", number==null?"":number.trim());
+          village=m.group("village");
+          row.put("village", village==null?"":village.trim());
+          table.add(row);
+      }
+      return table;
 }
 }
