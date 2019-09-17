@@ -102,7 +102,7 @@ public class Main {
          			  Set<String> strings = map.keySet();
          			  for (String key : strings) {
          				count++;
-         				if(count<=2)
+         				if(count<=4)
          				  write("            \""+map.get(key)+"\",",x2);
          				else
          				  write("            \""+map.get(key)+"\"",x2);
@@ -118,7 +118,7 @@ public class Main {
     			    Set<String> strings = map.keySet();
     			    for (String key : strings) {
     				  count++;
-    				  if(count<=4)
+    				  if(count<=6)
     				     write("            \""+map.get(key)+"\",",x2);
     				  else
     				     write("            \""+map.get(key)+"\"",x2);
